@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import "../../styles/reels.css";
 import axios from "axios";
 import ReelFeed from "../../components/ReelFeed";
+import { useNavigate } from "react-router-dom";
 
 const Saved = () => {
   const [videos, setVideos] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -22,6 +24,10 @@ const Saved = () => {
         setVideos(savedFoods);
       });
   }, []);
+
+  const handleBack = () => {
+    navigate(-1); // 👈 same behavior as Profile.jsx
+  };
 
   const removeSaved = async (item) => {
     try {
@@ -43,11 +49,19 @@ const Saved = () => {
   };
 
   return (
-    <ReelFeed
-      items={videos}
-      onSave={removeSaved}
-      emptyMessage="No saved videos yet."
-    />
+    <>
+      {/* 🔙 Glass Back Button */}
+      <button className="glass-back-btn" onClick={handleBack}>
+        <span className="glass-icon">←</span>
+        <span className="glass-text">Back</span>
+      </button>
+
+      <ReelFeed
+        items={videos}
+        onSave={removeSaved}
+        emptyMessage="No saved videos yet."
+      />
+    </>
   );
 };
 
